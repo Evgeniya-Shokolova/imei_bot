@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from .imei_service import check_imei
+from app.imei_service import check_imei
 
 
 router = APIRouter()

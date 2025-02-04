@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from .api import router as api_router
-from .log import start_bot
+from app.api import router as api_router
+from app.log import start_bot
 
 app = FastAPI()
 
