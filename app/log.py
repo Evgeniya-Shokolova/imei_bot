@@ -19,7 +19,7 @@ logging.basicConfig(
 
 
 def start(update: Update, context: CallbackContext):
-    """Начально работы бота"""
+    """Начало работы бота"""
     update.message.reply_text('Отправьте IMEI для проверки')
 
 
