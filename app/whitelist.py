@@ -1,6 +1,8 @@
-WHITELIST = {12345678, 87654321}
+# WHITELIST = {"31.23.127.175"}
+
+WHITELIST = {3123127175}
 
 
 def is_user_allowed(user_id: int) -> bool:
-    """Проверка пользователя по id в списке"""
+    """Проверка пользователя по ID в белом списке."""
     return user_id in WHITELIST
