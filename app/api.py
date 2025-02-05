@@ -1,5 +1,5 @@
 import os
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Header
 from pydantic import BaseModel
 import requests
 from dotenv import load_dotenv
@@ -7,11 +7,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Конфигурация окружения
-SANDBOX_API_URL = os.getenv('URL')
+SANDBOX_API_URL = os.getenv('SANDBOX_API_URL')
 SANDBOX_API_TOKEN = os.getenv('API_TOKEN')
 API_TOKEN = os.getenv('TOKEN')
 
 router = APIRouter()
+
 
 class IMEIRequest(BaseModel):
     """Модель данных для API запроса"""
@@ -39,7 +40,10 @@ def check_imei(imei: str) -> dict:
 
 @router.post('/api/check-imei')
 def api_check_imei(request: IMEIRequest,
-                   auth: bool = Depends(lambda: check_auth_token(request.token))):
+                   token: str = Header(
+                       lambda: check_auth_token(requests.token))):
     """Эндпоинт для проверки IMEI"""
+    check_auth_token(token)
     imei_data = check_imei(request.imei)
     return {'success': True, 'data': imei_data}
+
