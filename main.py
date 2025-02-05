@@ -8,11 +8,6 @@ app = FastAPI()
 # Подключаем маршруты
 app.include_router(api_router)
 
-
-@app.get("/")
-def read_root():
-    return {"message": "Добро пожаловать! FastAPI работает!"}
-
 @app.on_event("startup")
 async def on_startup():
     """Запуск бота"""
