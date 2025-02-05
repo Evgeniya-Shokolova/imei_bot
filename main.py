@@ -5,7 +5,6 @@ from app.bot import start_bot
 
 # Создаем объект FastAPI
 app = FastAPI()
-
 # Подключаем маршруты
 app.include_router(api_router)
 

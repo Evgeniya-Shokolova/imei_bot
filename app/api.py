@@ -38,7 +38,8 @@ def check_imei(imei: str) -> dict:
 
 
 @router.post('/api/check-imei')
-def api_check_imei(request: IMEIRequest, auth: bool = Depends(lambda: check_auth_token(request.token))):
+def api_check_imei(request: IMEIRequest,
+                   auth: bool = Depends(lambda: check_auth_token(request.token))):
     """Эндпоинт для проверки IMEI"""
     imei_data = check_imei(request.imei)
     return {'success': True, 'data': imei_data}
