@@ -1,12 +1,10 @@
 import os
 from aiogram import Bot, Dispatcher
 from aiogram.types import Message
-
+from aiogram.filters.command import Command
 import requests
-
 from app.whitelist import is_user_allowed
 from dotenv import load_dotenv
-
 
 load_dotenv()
 
@@ -22,6 +20,12 @@ dp = Dispatcher()
 def is_valid_imei(imei: str) -> bool:
     """Проверяет, является ли строка корректным IMEI (15 цифр)."""
     return imei.isdigit() and len(imei) == 15
+
+
+@dp.message(Command("start"))
+async def handle_start_command(message: Message):
+    """Обработчик для команды /start"""
+    await message.reply("Привет! Я бот для проверки IMEI. Отправь мне IMEI, и я проверю его для тебя.")
 
 
 @dp.message()
@@ -43,15 +47,16 @@ async def handle_imei(message: Message):
 
     # Обращение к API для проверки IMEI
     headers = {'Authorization': f'{API_SANDBOX_TOKEN}'}
-    response = requests.post(SANDBOX_API_URL,
-                             json={'imei': imei}, headers=headers)
+    response = requests.post(SANDBOX_API_URL, json={'imei': imei},
+                             headers=headers)
 
     if response.status_code == 200:
         imei_data = response.json()
         await message.reply(f'Информация об IMEI:\n{imei_data}')
     else:
         await message.reply(
-            f'Ошибка при проверке IMEI (код: {response.status_code})')
+            f'Ошибка при проверке IMEI (код: {response.status_code})'
+        )
 
 
 async def start_bot():
