@@ -1,9 +1,9 @@
 import os
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher
 from aiogram.types import Message
-from aiogram.filters import Command
+
 import requests
-import asyncio
+
 from app.whitelist import is_user_allowed
 from dotenv import load_dotenv
 
@@ -43,13 +43,15 @@ async def handle_imei(message: Message):
 
     # Обращение к API для проверки IMEI
     headers = {'Authorization': f'{API_SANDBOX_TOKEN}'}
-    response = requests.post(SANDBOX_API_URL, json={'imei': imei}, headers=headers)
+    response = requests.post(SANDBOX_API_URL,
+                             json={'imei': imei}, headers=headers)
 
     if response.status_code == 200:
         imei_data = response.json()
         await message.reply(f'Информация об IMEI:\n{imei_data}')
     else:
-        await message.reply(f'Ошибка при проверке IMEI (код: {response.status_code})')
+        await message.reply(
+            f'Ошибка при проверке IMEI (код: {response.status_code})')
 
 
 async def start_bot():
@@ -59,4 +61,3 @@ async def start_bot():
         await dp.start_polling(bot)
     finally:
         await bot.session.close()
-

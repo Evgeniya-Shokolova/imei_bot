@@ -1,5 +1,5 @@
 import os
-from fastapi import APIRouter, HTTPException, Header
+from fastapi import APIRouter, HTTPException, Header, Depends
 from pydantic import BaseModel
 import requests
 from dotenv import load_dotenv
@@ -17,21 +17,19 @@ router = APIRouter()
 class IMEIRequest(BaseModel):
     """Модель данных для API запроса"""
     imei: str
-    token: str
 
 
-def check_auth_token(token: str):
+def check_auth_token(token: str = Header(...)):
     """Авторизация через токен"""
     if token != API_TOKEN:
         raise HTTPException(status_code=401, detail='Unauthorized')
-    return True
 
 
 def check_imei(imei: str) -> dict:
     """Проверка IMEI через внешний API"""
-    headers = {'Authorization': f'{SANDBOX_API_TOKEN}'}
-    response = requests.post(SANDBOX_API_URL, json={'imei': imei},
-                             headers=headers)
+    headers = {'Authorization': f'Bearer {SANDBOX_API_TOKEN}'}
+    response = requests.post(SANDBOX_API_URL,
+                             json={'imei': imei}, headers=headers)
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code,
                             detail='Ошибка проверки IMEI')
@@ -39,11 +37,7 @@ def check_imei(imei: str) -> dict:
 
 
 @router.post('/api/check-imei')
-def api_check_imei(request: IMEIRequest,
-                   token: str = Header(
-                       lambda: check_auth_token(requests.token))):
+def api_check_imei(request: IMEIRequest, token: str = Depends(check_auth_token)):
     """Эндпоинт для проверки IMEI"""
-    check_auth_token(token)
     imei_data = check_imei(request.imei)
     return {'success': True, 'data': imei_data}
-

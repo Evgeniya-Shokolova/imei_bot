@@ -47,7 +47,7 @@ pip install -r requirements.txt
 ```
 Запустить бота
 ```bash
-uvicorn main:app
+uvicorn main:app --reload
 ```
 
 ## Сохраняем, коммитим и пушим изменения на GitHub
