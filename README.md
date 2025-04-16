@@ -1,5 +1,7 @@
 # IMEI Проверка Telegram Бот
 
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=anuraghazra&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
+
 ### Описание
 
 Данный бот позволяет пользователям проверять правильность IMEI-номеров и получать информацию о мобильных устройствах. Просто отправьте IMEI-номер боту, и он вернет вам результаты проверки.
